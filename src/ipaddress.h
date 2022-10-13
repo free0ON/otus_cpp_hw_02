@@ -148,8 +148,7 @@ public:
                 else {
                     ushort octet = std::stoi(VectorOfString[i]);
                     assert(octet >= 0 && octet <= 256);
-                    if(octet >= 0 && octet <= 256)
-                        ABCD[i] = std::stoi(VectorOfString[i]);
+                    ABCD[i] = std::stoi(VectorOfString[i]);
                 }
             }
             IPAddress second(ABCD[0], ABCD[1], ABCD[2], ABCD[3]);
@@ -174,12 +173,10 @@ public:
     friend bool operator== (const IPAddress& first, const ushort& Filter )
     {
         assert(Filter >= 0 && Filter <= 256);
-        if (Filter >= 0 && Filter <= 256)
-            return  (first.GetIntIp(0) == Filter) ||
-                    (first.GetIntIp(1) == Filter) ||
-                    (first.GetIntIp(2) == Filter) ||
-                    (first.GetIntIp(3) == Filter);
-        else return false;
+        return  (first.GetIntIp(0) == Filter) ||
+                (first.GetIntIp(1) == Filter) ||
+                (first.GetIntIp(2) == Filter) ||
+                (first.GetIntIp(3) == Filter);
     }
     /**
      * stream out from IPAddress
