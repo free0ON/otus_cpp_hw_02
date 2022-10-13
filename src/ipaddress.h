@@ -148,7 +148,7 @@ public:
                 else {
                     ushort octet = std::stoi(VectorOfString[i]);
                     assert(octet >= 0 && octet <= 256);
-                    ABCD[i] = std::stoi(VectorOfString[i]);
+                    ABCD[i] = octet;
                 }
             }
             IPAddress second(ABCD[0], ABCD[1], ABCD[2], ABCD[3]);
