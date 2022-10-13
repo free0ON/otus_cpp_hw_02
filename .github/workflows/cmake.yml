@@ -51,7 +51,7 @@ jobs:
       run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
       # Build test
     - name: Build Test
-      run: cmake --build . --target test
+      run: cmake --build ${{github.workspace}}/build --target test
       if: (env.GOOGLE_TEST == 'ON')
       # Run test
     - name: Test
