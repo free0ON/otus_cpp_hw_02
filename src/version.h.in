@@ -1,0 +1,6 @@
+#pragma once
+
+#cmakedefine PROJECT_VERSION "@PROJECT_VERSION@"
+#cmakedefine EMAIL_CONTACT "@EMAIL_CONTACT@"
+#cmakedefine PRJ_DESCRIPTION "@PRJ_DESCRIPTION@"
+#cmakedefine PRJ_HOMEPAGE_URL "@PRJ_HOMEPAGE_URL@"
