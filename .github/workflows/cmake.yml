@@ -1,7 +1,7 @@
 name: CMake
 env:
  # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
-  PRJ_NAME: "IP_Filter" # name without spaces
+  PRJ_NAME: "ip_filter" # name without spaces
   PRJ_VERSION_MAJOR: 0
   PRJ_VERSION_MINOR: 0
   PRJ_VERSION_PATCH: ${{ github.run_number }}
