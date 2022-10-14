@@ -13,7 +13,7 @@ set(PRJ_HOMEPAGE_URL "https://github.com/free0ON/otus_cpp_HW_02" CACHE INTERNAL 
 set(EMAIL_CONTACT "dmitrii.lozovoi@yandex.ru" CACHE INTERNAL "Email contact")
 
 # Test options
-option(GOOGLE_TEST "Google test" ON)
+#option(GOOGLE_TEST "Google test" ON)
 
 project(${PRJ_NAME} VERSION ${PRJ_VERSION_MAJOR}.${PRJ_VERSION_MINOR}.${PRJ_VERSION_PATCH} DESCRIPTION "${PRJ_DESCRIPTION}" HOMEPAGE_URL "${PRJ_HOMEPAGE_URL}")
 message("PROJECT_NAME: ${PROJECT_NAME} VERSION: ${PROJECT_VERSION}")
@@ -40,16 +40,14 @@ target_include_directories(${PRJ_NAME}
 target_include_directories(version
         PUBLIC "${CMAKE_BINARY_DIR}"
         )
-
+target_include_directories(test_all
+        PRIVATE
+        src
+        )
 target_link_libraries(${PRJ_NAME}
         PRIVATE
         ipaddress
         version
-        )
-
-target_include_directories(test_all
-        PRIVATE
-        src
         )
 
 target_link_libraries(test_all
@@ -60,7 +58,7 @@ target_link_libraries(test_all
         version
         ${CMAKE_THREAD_LIBS_INIT}
 )
-
+set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads REQUIRED)
 find_package(GTest REQUIRED)
 enable_testing()
