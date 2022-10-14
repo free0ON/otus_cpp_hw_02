@@ -26,7 +26,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - run: |
+    - name: Load Test library
+      run: |
         git clone https://github.com/google/googletest
         cd googletest
         cmake -Bbuild -H. -DBUILD_GMOCK=OFF
