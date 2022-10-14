@@ -43,40 +43,41 @@ target_link_libraries(${PRJ_NAME}
         ipaddress
         version
         )
-if(GOOGLE_TEST)
-    find_package(Threads REQUIRED)
-    find_package(GTest REQUIRED)
-    add_executable(test_all test/test_all.cpp)
-    set_target_properties(test_all PROPERTIES
-            CXX_STANDARD 17
-            CXX_STANDARD_REQUIRED ON
-            )
-    target_include_directories(test_all
-            PRIVATE
-            src
-            )
+#if(GOOGLE_TEST)
+find_package(Threads REQUIRED)
+find_package(GTest REQUIRED)
+add_executable(test_all test/test_all.cpp)
+set_target_properties(test_all PROPERTIES
+        CXX_STANDARD 17
+        CXX_STANDARD_REQUIRED ON
+        )
+target_include_directories(test_all
+        PRIVATE
+        src
+        )
 
-    target_link_libraries(
-            test_all
-            PUBLIC
-            gtest
-            gtest_main
-            ipaddress
-            version
-            ${CMAKE_THREAD_LIBS_INIT}
-    )
+target_link_libraries(
+        test_all
+        PUBLIC
+        gtest
+        gtest_main
+        ipaddress
+        version
+        ${CMAKE_THREAD_LIBS_INIT}
+)
 
-    enable_testing()
-    include(GoogleTest)
-    add_test(test_all test_all)
-    if (MSVC)
-        target_compile_options(test_all PRIVATE  /W4)
-    else()
-        target_compile_options(
-                test_all PRIVATE
-                -Wall -Wextra -pedantic -Werror)
-    endif(MSVC)
-endif(GOOGLE_TEST)
+enable_testing()
+include(GoogleTest)
+add_test(test_all test_all)
+if (MSVC)
+    target_compile_options(test_all PRIVATE  /W4)
+else()
+    target_compile_options(
+            test_all PRIVATE
+            -Wall -Wextra -pedantic -Werror)
+endif(MSVC)
+
+#endif(GOOGLE_TEST)
 install(TARGETS ${PRJ_NAME} RUNTIME DESTINATION bin)
 set(CPACK_GENERATOR DEB)
 set(CPACK_PACKAGE_VERSION_MAJOR "${PRJ_VERSION_MAJOR}")
