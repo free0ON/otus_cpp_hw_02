@@ -11,7 +11,7 @@ set(PRJ_HOMEPAGE_URL "https://github.com/free0ON/otus_cpp_HW_02" CACHE INTERNAL 
 set(EMAIL_CONTACT "dmitrii.lozovoi@yandex.ru" CACHE INTERNAL "Email contact")
 
 # Test options
-option(GOOGLE_TEST "Google test" ON)
+#option(GOOGLE_TEST "Google test" ON)
 
 project(${PRJ_NAME} VERSION ${PRJ_VERSION_MAJOR}.${PRJ_VERSION_MINOR}.${PRJ_VERSION_PATCH} DESCRIPTION "${PRJ_DESCRIPTION}" HOMEPAGE_URL "${PRJ_HOMEPAGE_URL}")
 message("PROJECT_NAME: ${PROJECT_NAME} VERSION: ${PROJECT_VERSION}")
@@ -49,14 +49,9 @@ target_link_libraries(${PRJ_NAME}
         ipaddress
         version
         )
-#if(GOOGLE_TEST)
+
 find_package(Threads REQUIRED)
 find_package(GTest REQUIRED)
-
-#set_target_properties(test_all PROPERTIES
-#        CXX_STANDARD 17
-#        CXX_STANDARD_REQUIRED ON
-#        )
 
 target_link_libraries(
         test_all
@@ -79,7 +74,6 @@ else()
             -Wall -Wextra -pedantic -Werror)
 endif(MSVC)
 
-#endif(GOOGLE_TEST)
 install(TARGETS ${PRJ_NAME} RUNTIME DESTINATION bin)
 set(CPACK_GENERATOR DEB)
 set(CPACK_PACKAGE_VERSION_MAJOR "${PRJ_VERSION_MAJOR}")
