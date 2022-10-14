@@ -8,28 +8,51 @@
  */
 
 TEST(ip_test, test_ip_compare) {
-//    ASSERT_GT(version(), 0) << "version() is not > 0";
-    IPAddress ip1("0.0.0.1"), ip2("0.0.0.1"), ip3("0.0.0.2");
-    IPAddress ip4("1.2.1.1");
-    IPAddress ip5("1.10.1.1");
-    ASSERT_TRUE(ip1 == "0.0.0.1") << "0.0.0.1 == 0.0.0.1";
-    ASSERT_TRUE(ip1 == "0.0.*.1") << "0.0.0.1 == 0.0.*.1";
-    ASSERT_TRUE(ip1 == "1");
-    ASSERT_TRUE(ip3 > ip1) << "0.0.0.2 > 0.0.0.1";
-    ASSERT_TRUE(ip1 < ip3) << "0.0.0.1 < 0.0.0.1";
-    ASSERT_TRUE(ip4 < ip5);
+    ASSERT_TRUE(IPAddress("0.0.0.1") == IPAddress("0.0.0.1"));
+    ASSERT_TRUE(IPAddress("0.0.0.1") == "0.0.*.1");
+    ASSERT_TRUE(IPAddress("0.0.0.1") == "1");
+    ASSERT_TRUE(IPAddress("0.0.0.2") > IPAddress("0.0.0.1"));
+    ASSERT_TRUE(IPAddress("0.0.0.1") < IPAddress("0.0.0.2"));
+    ASSERT_TRUE(IPAddress("1.2.1.1") < IPAddress("1.10.1.1"));
+    ASSERT_TRUE(IPAddress("0.0.0.0") == IPAddress("0.0.0.0"));
 }
 
 TEST(ip_test, test_ip_sotr)
 {
     // TODO sort test
-    IPAddress ip1("0.0.0.1"), ip2("0.0.0.1"), ip3("0.0.0.2");
-    IPAddress ip4("1.2.1.1");
-    IPAddress ip5("1.10.1.1");
-    std::vector<IPAddress> vip1;
-    vip1.push_back(ip1);
-    vip1.push_back(ip2);
-    vip1.push_back(ip3);
-    vip1.push_back(ip4);
-    vip1.push_back(ip5);
+    std::vector<IPAddress> NotSortedVector, SortedVector;
+    NotSortedVector.resize(5);
+    NotSortedVector[0] = "0.0.0.1";
+    NotSortedVector[1] = "0.0.1.0";
+    NotSortedVector[2] = "0.1.0.0";
+    NotSortedVector[3] = "1.0.0.0";
+    NotSortedVector[4] = "1.0.0.1";
+    SortedVector = IPAddress::sort(NotSortedVector);
+    ASSERT_TRUE(SortedVector[0] == "1.0.0.1");
+    ASSERT_TRUE(SortedVector[1] == "1.0.0.0");
+    ASSERT_TRUE(SortedVector[2] == "0.1.0.0");
+    ASSERT_TRUE(SortedVector[3] == "0.0.1.0");
+    ASSERT_TRUE(SortedVector[4] == "0.0.0.1");
+}
+
+TEST(ip_test, test_ip_filter)
+{
+    std::vector<IPAddress> NotFiltredVector, Filtred1, Filtred2, Filtred3;
+    NotFiltredVector.resize(5);
+    NotFiltredVector[0] = "1.0.0.46";
+    NotFiltredVector[1] = "1.0.1.0";
+    NotFiltredVector[2] = "46.1.0.0";
+    NotFiltredVector[3] = "46.70.0.0";
+    NotFiltredVector[4] = "1.70.46.1";
+    Filtred1 = IPAddress::filter(NotFiltredVector, "1.*.*.*");
+    Filtred2 = IPAddress::filter(NotFiltredVector, "46.70.*.*");
+    Filtred3 = IPAddress::filter(NotFiltredVector, "46");
+    ASSERT_TRUE(Filtred1[0] == "1.0.0.46");
+    ASSERT_TRUE(Filtred1[1] == "1.0.1.0");
+    ASSERT_TRUE(Filtred1[2] == "1.70.46.1");
+    ASSERT_TRUE(Filtred2[0] == "46.70.0.0");
+    ASSERT_TRUE(Filtred3[0] == "1.0.0.46");
+    ASSERT_TRUE(Filtred3[1] == "46.1.0.0");
+    ASSERT_TRUE(Filtred3[2] == "46.70.0.0");
+    ASSERT_TRUE(Filtred3[3] == "1.70.46.1");
 }

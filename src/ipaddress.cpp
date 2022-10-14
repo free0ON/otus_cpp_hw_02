@@ -4,11 +4,11 @@
 /**
  * Split string StringToSplit by CharDelimiter and return by std::move to vector of strings
  */
- std::vector<std::string> IPAddress::SplitString(const std::string& StringToSplit, const char CharDelimiter)
+IPAddress::TVectorOfString IPAddress::SplitString(const std::string& StringToSplit, const char CharDelimiter)
 {
-    std::vector<std::string> ReturnIPVector;
-    StringSize LastPosition = 0;
-    StringSize CurrentPosition = StringToSplit.find(CharDelimiter);
+    TVectorOfString ReturnIPVector;
+    TStringSize LastPosition = 0;
+    TStringSize CurrentPosition = StringToSplit.find(CharDelimiter);
     while (CurrentPosition != std::string::npos)
     {
         ReturnIPVector.push_back(StringToSplit.substr(LastPosition, CurrentPosition - LastPosition));
@@ -24,7 +24,7 @@
  */
 IPAddress IPAddress::SplitIP(const std::string& InputIPString, const char& CharDelimiter, const int& IpPositionInLine)
 {
-    std::vector<std::string> VectorOfIPStrings = SplitString(InputIPString, CharDelimiter);
+    TVectorOfString VectorOfIPStrings = SplitString(InputIPString, CharDelimiter);
     IPAddress IpToReturn;
     if (IpPositionInLine <= VectorOfIPStrings.size())
         for(int i = 0; i < VectorOfIPStrings.size(); i++)

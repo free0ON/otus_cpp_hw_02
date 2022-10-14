@@ -4,14 +4,17 @@
 #include <iostream>
 #include <vector>
 #include <string_view>
-#include <assert.h>
+#include <cassert>
 
 /**
  * class IPAddress provide sort, filter, string parsing, operators compare and cin/cout
  */
 class IPAddress {
 private:
-    using StringSize = std::string::size_type;
+    using TStringSize = std::string::size_type;
+    using TVectorOfString = std::vector<std::string>;
+    using TVectorOfIPAddress = std::vector<IPAddress>;
+    using TOctet = u_char;
     union
     {
         struct {
@@ -29,22 +32,37 @@ private:
      * @param CharDelimiter
      * @return ReturnIPVector
      */
-    static std::vector<std::string> SplitString(const std::string& StringToSplit, const char CharDelimiter);
+    static TVectorOfString SplitString(const std::string& StringToSplit, const char CharDelimiter);
 
-    std::string IPIntToString(const ushort& a, const ushort& b, const ushort& c, const ushort& d)
+    static auto IPIntToString(const TOctet& a, const TOctet& b, const TOctet& c, const TOctet& d)
     {
         return std::to_string(a) +'.' + std::to_string(b) + '.' +
                std::to_string(c) + '.' + std::to_string(d);
     }
+
+    void SetIPFromString(const std::string InputStringIP)
+    {
+        StringIP = InputStringIP;
+        TVectorOfString VectorOfIP = SplitString(StringIP, '.');
+        IPUnion.ABCD.a = std::stoi(VectorOfIP[0]);
+        IPUnion.ABCD.b = std::stoi(VectorOfIP[1]);
+        IPUnion.ABCD.c = std::stoi(VectorOfIP[2]);
+        IPUnion.ABCD.d = std::stoi(VectorOfIP[3]);
+    }
+
 public:
 
     IPAddress()
     {
         StringIP = "";
+        IPUnion.ABCD.a = 0;
+        IPUnion.ABCD.b = 0;
+        IPUnion.ABCD.c = 0;
+        IPUnion.ABCD.d = 0;
         IPUnion.IP = 0;
     }
 
-    IPAddress(const ushort& a, const ushort& b, const ushort& c, const ushort& d)
+    IPAddress(const TOctet& a, const TOctet& b, const TOctet& c, const TOctet& d)
     {
         IPUnion.ABCD.a = a;
         IPUnion.ABCD.b = b;
@@ -53,7 +71,7 @@ public:
         StringIP = IPIntToString(a, b, c, d);
     }
 
-    IPAddress(const ushort ABCD[4])
+    explicit IPAddress(const TOctet ABCD[4])
     {
         if(size_t(ABCD) == 4) {
             IPUnion.ABCD.a = ABCD[0];
@@ -64,13 +82,8 @@ public:
         }
     }
 
-    IPAddress(const std::string& ip) {
-        StringIP = ip;
-        std::vector<std::string> VectorOfIP = SplitString(StringIP, '.');
-        IPUnion.ABCD.a = std::stoi(VectorOfIP[0]);
-        IPUnion.ABCD.b = std::stoi(VectorOfIP[1]);
-        IPUnion.ABCD.c = std::stoi(VectorOfIP[2]);
-        IPUnion.ABCD.d = std::stoi(VectorOfIP[3]);
+    explicit IPAddress(const std::string& InputStringIP) {
+        SetIPFromString(InputStringIP);
     }
 
     std::string GetStringIP() const {
@@ -81,7 +94,7 @@ public:
         return IPUnion.IP;
     }
 
-    ushort GetIntIp(const int& i) const {
+    TOctet GetIntIp(const int& i) const {
         switch (i)
         {
             case 0: return IPUnion.ABCD.a; break;
@@ -93,7 +106,7 @@ public:
     }
     /**
      * SplitIP - split InputIPString "1.2.3.4<tab>txt1<tab>txt2.." by CharDelimiter and return
-     * IPAdress in IpPositionInLine
+     * IPAddress in IpPositionInLine
      * @param InputIPString - string with IP and some text delimited by <tab>
      * @param CharDelimiter - <tab>
      * @param IpPositionInLine - start with 0 position IP address in InputIPString
@@ -135,19 +148,17 @@ public:
      * @return bool
      */
     friend bool operator== (const IPAddress& first, const std::string& Filter ) {
-        std::vector<std::string> VectorOfString = SplitString(Filter, '.');
-        size_t VectorSize = VectorOfString.size();
-        //assert(VectorSize >=0 && VectorSize <= 4);
+        TVectorOfString VectorOfString = SplitString(Filter, '.');
+        auto VectorSize = VectorOfString.size();
         if(VectorSize == 4)
         {
-            ushort ABCD[4];
+            TOctet ABCD[4];
             for(int i = 0; i < 4; i++)
             {
                 if(VectorOfString[i] == "*")
                     ABCD[i] = first.GetIntIp(i);
                 else {
-                    ushort octet = std::stoi(VectorOfString[i]);
-                    assert(octet >= 0 && octet <= 256);
+                    TOctet octet = std::stoi(VectorOfString[i]);
                     ABCD[i] = octet;
                 }
             }
@@ -170,9 +181,8 @@ public:
      * @param Filter
      * @return
      */
-    friend bool operator== (const IPAddress& first, const ushort& Filter )
+    friend bool operator== (const IPAddress& first, const TOctet& Filter )
     {
-        assert(Filter >= 0 && Filter <= 256);
         return  (first.GetIntIp(0) == Filter) ||
                 (first.GetIntIp(1) == Filter) ||
                 (first.GetIntIp(2) == Filter) ||
@@ -187,7 +197,6 @@ public:
     friend std::ostream & operator<<(std::ostream& OutStream, const IPAddress& IPToPrint)
     {
         OutStream << IPToPrint.GetStringIP();
-        // << ": " << static_cast<int>(IPToPrint.IPUnion.ABCD.a) << "." << static_cast<int>(IPToPrint.IPUnion.ABCD.b) << "." << static_cast<int>(IPToPrint.IPUnion.ABCD.c) << "." << static_cast<int>(IPToPrint.IPUnion.ABCD.d) << ": " << IPToPrint.GetIp() << std::endl;
         return OutStream;
     }
     /**
@@ -196,7 +205,7 @@ public:
      * @param IPToPrint
      * @return
      */
-    friend std::istream & operator>>(std::istream & InStream, IPAddress& IPToPrint)
+    friend std::istream & operator>>(std::istream& InStream, IPAddress& IPToPrint)
     {
         std::string line;
         InStream >> line;
@@ -209,7 +218,7 @@ public:
      * @param VectorIPToScan
      * @return
      */
-    friend std::istream& operator>>(std::istream & InStream, std::vector<IPAddress>& VectorIPToScan)
+    friend std::istream& operator>>(std::istream& InStream, TVectorOfIPAddress& VectorIPToScan)
     {
         for(std::string line; std::getline(InStream, line);)
         {
@@ -218,23 +227,42 @@ public:
         return InStream;
     }
     /**
-     * Stream out from VEctor of IPAddress
+     * Stream out from Vector of IPAddress
      * @param OutStream
      * @param VectorIPToPrint
      * @return
      */
-    friend std::ostream &operator<<(std::ostream& OutStream, const std::vector<IPAddress>& VectorIPToPrint)
+    friend std::ostream& operator<<(std::ostream& OutStream, const TVectorOfIPAddress& VectorIPToPrint)
     {
         for(IPAddress IPToPrint: VectorIPToPrint)
             OutStream << IPToPrint << std::endl;
         return OutStream;
     }
     /**
+     * operator= set IP from input const string
+     * @param InputStringIP
+     * @return
+     */
+    IPAddress& operator= (const std::string& InputStringIP)
+    {
+        SetIPFromString(InputStringIP);
+        return *this;
+    }
+    /**
+     * operator[] return octer at position i, where "1.2.3.4" i = 0 -> 1 and i = 3 -> 4
+     * @param i
+     * @return TOctet
+     */
+    TOctet operator[] (int i)
+    {
+        return this->GetIntIp(i);
+    }
+    /**
      * Reverse sort method in vector of IPAddress
      * @param VectorToSort
      * @return
      */
-    static std::vector<IPAddress> sort(const std::vector<IPAddress> &VectorToSort);
+    static std::vector<IPAddress> sort(const std::vector<IPAddress>& VectorToSort);
     /**
      * Filter vector of IPAddress elements by Filter "46.70.*.*" where * is any number
      * 46 and 70 are numbers to compare with ip
@@ -244,5 +272,5 @@ public:
      * @param Filter
      * @return
      */
-    static std::vector<IPAddress> filter(const std::vector<IPAddress>& VectorOfIP, const std::string& Filter);
+    static std::vector<IPAddress> filter(const TVectorOfIPAddress& VectorOfIP, const std::string& Filter);
 };
