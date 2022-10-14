@@ -44,7 +44,7 @@ jobs:
         -DPRJ_HOMEPAGE_URL=${{ env.PRJ_HOMEPAGE_URL }} \
         -DPRJ_CMAKE_MIN_VERSION=${{ env.PRJ_CMAKE_MIN_VERSION }} \
         -DEMAIL_CONTACT=${{ env.EMAIL_CONTACT }} \
-        -DGOOGLE_TEST=${{ env.GOOGLE_TEST }} \
+        -DGOOGLE_TEST=${{ env.GOOGLE_TEST }}
 
     - name: Build
       # Build your program with the given configuration
