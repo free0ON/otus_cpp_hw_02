@@ -61,20 +61,18 @@ target_link_libraries(test_all
         ${CMAKE_THREAD_LIBS_INIT}
 )
 
-if(GOOGLE_TEST)
-    find_package(Threads REQUIRED)
-    find_package(GTest REQUIRED)
-    enable_testing()
-    include(GoogleTest)
-    add_test(test_all test_all)
-    if (MSVC)
-        target_compile_options(test_all PRIVATE  /W4)
-    else()
-        target_compile_options(
-                test_all PRIVATE
-                -Wall -Wextra -pedantic -Werror)
-    endif(MSVC)
-endif(GOOGLE_TEST)
+find_package(Threads REQUIRED)
+find_package(GTest REQUIRED)
+enable_testing()
+include(GoogleTest)
+add_test(test_all test_all)
+if (MSVC)
+    target_compile_options(test_all PRIVATE  /W4)
+else()
+    target_compile_options(
+            test_all PRIVATE
+            -Wall -Wextra -pedantic -Werror)
+endif(MSVC)
 install(TARGETS ${PRJ_NAME} RUNTIME DESTINATION bin)
 set(CPACK_GENERATOR DEB)
 set(CPACK_PACKAGE_VERSION_MAJOR "${PRJ_VERSION_MAJOR}")
