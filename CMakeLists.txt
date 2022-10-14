@@ -1,5 +1,3 @@
-# IP Filter project
-#
 # CMake minimum version
 set(PRJ_CMAKE_MIN_VERSION 3.2 CACHE INTERNAL "CMake version")
 cmake_minimum_required(VERSION ${PRJ_CMAKE_MIN_VERSION})
@@ -26,8 +24,7 @@ configure_file(src/version.h.in version.h)
 add_library(ipaddress src/ipaddress.cpp)
 add_library(version src/version.cpp)
 add_executable(${PRJ_NAME} src/main.cpp)
-add_executable(test_all test/test_all.cpp)
-set_target_properties(${PRJ_NAME} ipaddress version test_all PROPERTIES
+set_target_properties(${PRJ_NAME} ipaddress version PROPERTIES
         CXX_STANDARD 17
         CXX_STANDARD_REQUIRED ON
         )
@@ -46,24 +43,28 @@ target_link_libraries(${PRJ_NAME}
         ipaddress
         version
         )
-target_include_directories(test_all
-        PRIVATE
-        src
-        )
-target_link_libraries(
-        test_all
-        PUBLIC
-        gtest
-        gtest_main
-        ipaddress
-        version
-        ${CMAKE_THREAD_LIBS_INIT}
-)
-
 if(GOOGLE_TEST)
     find_package(Threads REQUIRED)
     find_package(GTest REQUIRED)
+    add_executable(test_all test/test_all.cpp)
+    set_target_properties(test_all PROPERTIES
+            CXX_STANDARD 17
+            CXX_STANDARD_REQUIRED ON
+            )
+    target_include_directories(test_all
+            PRIVATE
+            src
+            )
 
+    target_link_libraries(
+            test_all
+            PUBLIC
+            gtest
+            gtest_main
+            ipaddress
+            version
+            ${CMAKE_THREAD_LIBS_INIT}
+    )
 
     enable_testing()
     include(GoogleTest)
