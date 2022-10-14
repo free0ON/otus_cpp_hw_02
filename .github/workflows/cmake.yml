@@ -39,7 +39,8 @@ jobs:
       # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
       # -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
       run: |
-        cmake . -DPRJ_NAME=${{ env.PRJ_NAME }} \
+        cmake . -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} \
+        -DPRJ_NAME=${{ env.PRJ_NAME }} \
         -DPRJ_VERSION_MAJOR=${{ env.PRJ_VERSION_MAJOR }} \
         -DPRJ_VERSION_MINOR=${{ env.PRJ_VERSION_MINOR }} \
         -DPRJ_VERSION_PATCH=${{ env.PRJ_VERSION_PATCH }} \
@@ -54,10 +55,6 @@ jobs:
     - name: Build
       # Build your program with the given configuration
       run: cmake --build . --config ${{env.BUILD_TYPE}}
-#      # Build test
-#    - name: Build Test
-#      run: cmake --build . --target test
-#      if: (env.GOOGLE_TEST == 'ON')
       # Run test
     - name: Test
       working-directory: ${{github.workspace}}
