@@ -53,10 +53,10 @@ target_link_libraries(${PRJ_NAME}
 find_package(Threads REQUIRED)
 find_package(GTest REQUIRED)
 
-set_target_properties(test_all PROPERTIES
-        CXX_STANDARD 17
-        CXX_STANDARD_REQUIRED ON
-        )
+#set_target_properties(test_all PROPERTIES
+#        CXX_STANDARD 17
+#        CXX_STANDARD_REQUIRED ON
+#        )
 
 target_link_libraries(
         test_all
