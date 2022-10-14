@@ -37,7 +37,8 @@ jobs:
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
       # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
       # -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
-      run: cmake . -DPRJ_NAME=${{ env.PRJ_NAME }} \
+      run: |
+        cmake . -DPRJ_NAME=${{ env.PRJ_NAME }} \
         -DPRJ_VERSION_MAJOR=${{ env.PRJ_VERSION_MAJOR }} \
         -DPRJ_VERSION_MINOR=${{ env.PRJ_VERSION_MINOR }} \
         -DPRJ_VERSION_PATCH=${{ env.PRJ_VERSION_PATCH }} \
@@ -45,7 +46,9 @@ jobs:
         -DPRJ_HOMEPAGE_URL=${{ env.PRJ_HOMEPAGE_URL }} \
         -DPRJ_CMAKE_MIN_VERSION=${{ env.PRJ_CMAKE_MIN_VERSION }} \
         -DEMAIL_CONTACT=${{ env.EMAIL_CONTACT }} \
-        -DGOOGLE_TEST=${{ env.GOOGLE_TEST }}
+        -DBOOST_TEST=${{ env.BOOST_TEST }} \
+        -DGOOGLE_TEST=${{ env.GOOGLE_TEST }} \
+        -DCATCH2_TEST=${{ env.CATCH2_TEST }}
 
     - name: Build
       # Build your program with the given configuration
