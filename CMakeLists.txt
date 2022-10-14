@@ -13,7 +13,7 @@ set(PRJ_HOMEPAGE_URL "https://github.com/free0ON/otus_cpp_HW_02" CACHE INTERNAL 
 set(EMAIL_CONTACT "dmitrii.lozovoi@yandex.ru" CACHE INTERNAL "Email contact")
 
 # Test options
-#option(GOOGLE_TEST "Google test" ON)
+option(GOOGLE_TEST "Google test" ON)
 
 project(${PRJ_NAME} VERSION ${PRJ_VERSION_MAJOR}.${PRJ_VERSION_MINOR}.${PRJ_VERSION_PATCH} DESCRIPTION "${PRJ_DESCRIPTION}" HOMEPAGE_URL "${PRJ_HOMEPAGE_URL}")
 message("PROJECT_NAME: ${PROJECT_NAME} VERSION: ${PROJECT_VERSION}")
@@ -40,37 +40,42 @@ target_include_directories(${PRJ_NAME}
 target_include_directories(version
         PUBLIC "${CMAKE_BINARY_DIR}"
         )
-target_include_directories(test_all
-        PRIVATE
-        src
-        )
+
 target_link_libraries(${PRJ_NAME}
         PRIVATE
         ipaddress
         version
         )
-
-target_link_libraries(test_all
+target_include_directories(test_all
         PRIVATE
+        src
+        )
+target_link_libraries(
+        test_all
+        PUBLIC
         gtest
         gtest_main
         ipaddress
         version
         ${CMAKE_THREAD_LIBS_INIT}
 )
-set(THREADS_PREFER_PTHREAD_FLAG ON)
-find_package(Threads REQUIRED)
-find_package(GTest REQUIRED)
-enable_testing()
-include(GoogleTest)
-add_test(test_all test_all)
-if (MSVC)
-    target_compile_options(test_all PRIVATE  /W4)
-else()
-    target_compile_options(
-            test_all PRIVATE
-            -Wall -Wextra -pedantic -Werror)
-endif(MSVC)
+
+if(GOOGLE_TEST)
+    find_package(Threads REQUIRED)
+    find_package(GTest REQUIRED)
+
+
+    enable_testing()
+    include(GoogleTest)
+    add_test(test_all test_all)
+    if (MSVC)
+        target_compile_options(test_all PRIVATE  /W4)
+    else()
+        target_compile_options(
+                test_all PRIVATE
+                -Wall -Wextra -pedantic -Werror)
+    endif(MSVC)
+endif(GOOGLE_TEST)
 install(TARGETS ${PRJ_NAME} RUNTIME DESTINATION bin)
 set(CPACK_GENERATOR DEB)
 set(CPACK_PACKAGE_VERSION_MAJOR "${PRJ_VERSION_MAJOR}")
