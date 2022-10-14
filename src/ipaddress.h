@@ -137,7 +137,7 @@ public:
     friend bool operator== (const IPAddress& first, const std::string& Filter ) {
         std::vector<std::string> VectorOfString = SplitString(Filter, '.');
         size_t VectorSize = VectorOfString.size();
-        assert(VectorSize >=0 && VectorSize <= 4);
+        //assert(VectorSize >=0 && VectorSize <= 4);
         if(VectorSize == 4)
         {
             ushort ABCD[4];
