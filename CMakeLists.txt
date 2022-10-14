@@ -39,6 +39,11 @@ target_include_directories(version
         PUBLIC "${CMAKE_BINARY_DIR}"
         )
 
+target_include_directories(test_all
+        PRIVATE
+        src
+        )
+
 target_link_libraries(${PRJ_NAME}
         PRIVATE
         ipaddress
@@ -51,10 +56,6 @@ find_package(GTest REQUIRED)
 set_target_properties(test_all PROPERTIES
         CXX_STANDARD 17
         CXX_STANDARD_REQUIRED ON
-        )
-target_include_directories(test_all
-        PRIVATE
-        src
         )
 
 target_link_libraries(
