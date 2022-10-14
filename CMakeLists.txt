@@ -25,7 +25,7 @@ add_library(ipaddress src/ipaddress.cpp)
 add_library(version src/version.cpp)
 add_executable(${PRJ_NAME} src/main.cpp)
 add_executable(test_all test/test_all.cpp)
-set_target_properties(${PRJ_NAME} ipaddress version PROPERTIES
+set_target_properties(${PRJ_NAME} ipaddress version test_all PROPERTIES
         CXX_STANDARD 17
         CXX_STANDARD_REQUIRED ON
         )
