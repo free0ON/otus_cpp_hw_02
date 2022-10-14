@@ -31,6 +31,7 @@ jobs:
         cd googletest
         cmake -Bbuild -H. -DBUILD_GMOCK=OFF
         sudo cmake --build build --target install
+        cd ${{github.workspace}}
       if: (env.GOOGLE_TEST == 'ON')
     - name: Configure CMake
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
@@ -48,10 +49,10 @@ jobs:
         -DGOOGLE_TEST=${{ env.GOOGLE_TEST }}
     - name: Build
       # Build your program with the given configuration
-      run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
+      run: cmake --build . --config ${{env.BUILD_TYPE}}
       # Build test
     - name: Build Test
-      run: cmake --build ${{github.workspace}}/build --target test
+      run: cmake --build . --target test
       if: (env.GOOGLE_TEST == 'ON')
       # Run test
 #    - name: Test
@@ -61,7 +62,7 @@ jobs:
 #      run: ctest -C ${{env.BUILD_TYPE}}
       # Create release
     - name: Build package
-      run: cmake --build ${{github.workspace}}/build --target package
+      run: cmake --build . --target package
     - name: Create Release
       id: create_release
       uses: actions/create-release@v1
@@ -81,6 +82,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ${{github.workspace}}/build/${{ env.PRJ_NAME }}-${{ env.PRJ_VERSION_MAJOR}}.${{ env.PRJ_VERSION_MINOR}}.${{ env.PRJ_VERSION_PATCH}}-Linux.deb
+        asset_path: ./${{ env.PRJ_NAME }}-${{ env.PRJ_VERSION_MAJOR}}.${{ env.PRJ_VERSION_MINOR}}.${{ env.PRJ_VERSION_PATCH}}-Linux.deb
         asset_name: ${{ env.PRJ_NAME }}-${{ env.PRJ_VERSION_MAJOR}}.${{ env.PRJ_VERSION_MINOR}}.${{ env.PRJ_VERSION_PATCH }}-Linux.deb
         asset_content_type: application/vnd.debian.binary-package
