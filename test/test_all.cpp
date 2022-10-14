@@ -5,6 +5,7 @@
  * Google tests
  * ip compare
  * ip sort
+ * ip filter
  */
 
 TEST(ip_test, test_ip_compare) {
@@ -19,7 +20,6 @@ TEST(ip_test, test_ip_compare) {
 
 TEST(ip_test, test_ip_sotr)
 {
-    // TODO sort test
     std::vector<IPAddress> NotSortedVector, SortedVector;
     NotSortedVector.resize(5);
     NotSortedVector[0] = "0.0.0.1";

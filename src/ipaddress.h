@@ -33,13 +33,23 @@ private:
      * @return ReturnIPVector
      */
     static TVectorOfString SplitString(const std::string& StringToSplit, const char CharDelimiter);
-
+    /**
+     * Return String in IP format "1.2.3.4" from 4 octets
+     * @param a
+     * @param b
+     * @param c
+     * @param d
+     * @return
+     */
     static auto IPIntToString(const TOctet& a, const TOctet& b, const TOctet& c, const TOctet& d)
     {
         return std::to_string(a) +'.' + std::to_string(b) + '.' +
                std::to_string(c) + '.' + std::to_string(d);
     }
-
+    /**
+     * Set IP from String and init class members
+     * @param InputStringIP
+     */
     void SetIPFromString(const std::string InputStringIP)
     {
         StringIP = InputStringIP;
@@ -49,9 +59,17 @@ private:
         IPUnion.ABCD.c = std::stoi(VectorOfIP[2]);
         IPUnion.ABCD.d = std::stoi(VectorOfIP[3]);
     }
-
+    /**
+     * Get Ip in 32 bit format
+     * @return
+     */
+    uint32_t GetIp() const {
+        return IPUnion.IP;
+    }
 public:
-
+    /**
+     * Default constructor
+     */
     IPAddress()
     {
         StringIP = "";
@@ -62,6 +80,13 @@ public:
         IPUnion.IP = 0;
     }
 
+    /**
+     * Constructor from 4 octets
+     * @param a
+     * @param b
+     * @param c
+     * @param d
+     */
     IPAddress(const TOctet& a, const TOctet& b, const TOctet& c, const TOctet& d)
     {
         IPUnion.ABCD.a = a;
@@ -70,7 +95,10 @@ public:
         IPUnion.ABCD.d = d;
         StringIP = IPIntToString(a, b, c, d);
     }
-
+    /**
+     * Constructor from array of octets
+     * @param ABCD
+     */
     explicit IPAddress(const TOctet ABCD[4])
     {
         if(size_t(ABCD) == 4) {
@@ -81,18 +109,25 @@ public:
             StringIP = IPIntToString(ABCD[0], ABCD[1], ABCD[2], ABCD[3]);
         }
     }
-
+    /**
+     * Constructor from String
+     * @param InputStringIP
+     */
     explicit IPAddress(const std::string& InputStringIP) {
         SetIPFromString(InputStringIP);
     }
-
+    /**
+     * Get StringIP
+     * @return
+     */
     std::string GetStringIP() const {
         return StringIP;
     }
-
-    uint32_t GetIp() const {
-        return IPUnion.IP;
-    }
+    /**
+     * Get octet from IP "1.2.3.4" by number i where i = 0 -> 1 and i = 3 -> 4
+     * @param i
+     * @return
+     */
 
     TOctet GetIntIp(const int& i) const {
         switch (i)
@@ -252,7 +287,7 @@ public:
      * operator[] return octer at position i, where "1.2.3.4" i = 0 -> 1 and i = 3 -> 4
      * @param i
      * @return TOctet
-     */
+     *
     TOctet operator[] (int i)
     {
         return this->GetIntIp(i);

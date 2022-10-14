@@ -10,9 +10,6 @@ set(PRJ_DESCRIPTION "Ip Filter project" CACHE INTERNAL "Project description")
 set(PRJ_HOMEPAGE_URL "https://github.com/free0ON/otus_cpp_HW_02" CACHE INTERNAL "Project URL")
 set(EMAIL_CONTACT "dmitrii.lozovoi@yandex.ru" CACHE INTERNAL "Email contact")
 
-# Test options
-#option(GOOGLE_TEST "Google test" ON)
-
 project(${PRJ_NAME} VERSION ${PRJ_VERSION_MAJOR}.${PRJ_VERSION_MINOR}.${PRJ_VERSION_PATCH} DESCRIPTION "${PRJ_DESCRIPTION}" HOMEPAGE_URL "${PRJ_HOMEPAGE_URL}")
 message("PROJECT_NAME: ${PROJECT_NAME} VERSION: ${PROJECT_VERSION}")
 message("GOOGLE_TEST: ${GOOGLE_TEST}")
@@ -66,12 +63,23 @@ target_link_libraries(
 enable_testing()
 include(GoogleTest)
 add_test(test_all test_all)
+
 if (MSVC)
+    target_compile_options(${PRJ_NAME}  PRIVATE  /W4)
+    target_compile_options(ipaddress PRIVATE  /W4)
+    target_compile_options(version PRIVATE  /W4)
     target_compile_options(test_all PRIVATE  /W4)
+
 else()
-    target_compile_options(
-            test_all PRIVATE
-            -Wall -Wextra -pedantic -Werror)
+    target_compile_options(${PRJ_NAME} PRIVATE
+            -Wall -Wextra -pedantic -Wcomment)
+    target_compile_options(ipaddress PRIVATE
+            -Wall -Wextra -pedantic -Wcomment)
+    target_compile_options(version PRIVATE
+            -Wall -Wextra -pedantic -Wcomment)
+    target_compile_options(test_all PRIVATE
+            -Wall -Wextra -pedantic -Wcomment)
+
 endif(MSVC)
 
 install(TARGETS ${PRJ_NAME} RUNTIME DESTINATION bin)

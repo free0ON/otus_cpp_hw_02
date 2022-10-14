@@ -3,6 +3,9 @@
 #include "ipaddress.h"
 /**
  * Split string StringToSplit by CharDelimiter and return by std::move to vector of strings
+ * @param StringToSplit
+ * @param CharDelimiter
+ * @return
  */
 IPAddress::TVectorOfString IPAddress::SplitString(const std::string& StringToSplit, const char CharDelimiter)
 {
@@ -19,8 +22,12 @@ IPAddress::TVectorOfString IPAddress::SplitString(const std::string& StringToSpl
     return std::move(ReturnIPVector);
 }
 /**
- *  Split string InputIPString with IP address and other symbols by char CharDelimiter
- *  and return only element at IpPositionInLine
+ * Split string InputIPString with IP address and other symbols by char CharDelimiter
+ * and return only element at IpPositionInLine
+ * @param InputIPString - Input string
+ * @param CharDelimiter - delimiter
+ * @param IpPositionInLine - position IP in splitted string
+ * @return IpToReturn
  */
 IPAddress IPAddress::SplitIP(const std::string& InputIPString, const char& CharDelimiter, const int& IpPositionInLine)
 {
@@ -35,10 +42,10 @@ IPAddress IPAddress::SplitIP(const std::string& InputIPString, const char& CharD
     return std::move(IpToReturn);
 }
 /**
- *  Filter vector of IPAddress elements by Filter "46.70.*.*" where * is any number
- *  46 and 70 are numbers to compare with ip
- *  VectorOfIP is input vector
- *  FilteredIP is output vector returned by std::move
+ * Filter vector of IPAddress elements by Filter "46.70.*.*" * - any number
+ * @param VectorOfIP is input vector
+ * @param Filter "46.70.*.*" where * is any number 46 and 70 are numbers to compare with ip
+ * @return s output vector returned by std::move
  */
 std::vector<IPAddress> IPAddress::filter(const std::vector<IPAddress>& VectorOfIP, const std::string& Filter) {
     std::vector<IPAddress> FilteredIP;
@@ -50,9 +57,9 @@ std::vector<IPAddress> IPAddress::filter(const std::vector<IPAddress>& VectorOfI
     return std::move(FilteredIP);
 }
 /**
- *  Reverse sort method in vector of IPAddress
- *  VectorToSort - input vector
- *  SortedIPVector - ouput vector, returned by move semantic method std::move
+ * Reverse sort method in vector of IPAddress
+ * @param VectorToSort - input vector
+ * @return SortedIPVector - output vector, returned by move semantic method std::move
  */
 std::vector<IPAddress> IPAddress::sort(const std::vector<IPAddress>& VectorToSort) {
     std::vector<IPAddress> SortedIPVector;
