@@ -9,7 +9,7 @@
  * @param argv "-h" option for help out
  * @return
  */
-int main(int argc, char *argv[])
+int main(void)
 {
     try {
         std::vector<IPAddress> VectorOfIP;

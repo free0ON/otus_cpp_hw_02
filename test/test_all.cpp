@@ -20,14 +20,14 @@ TEST(ip_test, test_ip_compare) {
 
 TEST(ip_test, test_ip_sotr)
 {
-    std::vector<IPAddress> NotSortedVector, SortedVector;
+    std::vector<IPAddress> NotSortedVector;
     NotSortedVector.resize(5);
     NotSortedVector[0] = "0.0.0.1";
     NotSortedVector[1] = "0.0.1.0";
     NotSortedVector[2] = "0.1.0.0";
     NotSortedVector[3] = "1.0.0.0";
     NotSortedVector[4] = "1.0.0.1";
-    SortedVector = IPAddress::sort(NotSortedVector);
+    auto SortedVector = IPAddress::sort(NotSortedVector);
     ASSERT_TRUE(SortedVector[0] == "1.0.0.1");
     ASSERT_TRUE(SortedVector[1] == "1.0.0.0");
     ASSERT_TRUE(SortedVector[2] == "0.1.0.0");
@@ -37,16 +37,16 @@ TEST(ip_test, test_ip_sotr)
 
 TEST(ip_test, test_ip_filter)
 {
-    std::vector<IPAddress> NotFiltredVector, Filtred1, Filtred2, Filtred3;
+    std::vector<IPAddress> NotFiltredVector;
     NotFiltredVector.resize(5);
     NotFiltredVector[0] = "1.0.0.46";
     NotFiltredVector[1] = "1.0.1.0";
     NotFiltredVector[2] = "46.1.0.0";
     NotFiltredVector[3] = "46.70.0.0";
     NotFiltredVector[4] = "1.70.46.1";
-    Filtred1 = IPAddress::filter(NotFiltredVector, "1.*.*.*");
-    Filtred2 = IPAddress::filter(NotFiltredVector, "46.70.*.*");
-    Filtred3 = IPAddress::filter(NotFiltredVector, "46");
+    auto Filtred1 = IPAddress::filter(NotFiltredVector, "1.*.*.*");
+    auto Filtred2 = IPAddress::filter(NotFiltredVector, "46.70.*.*");
+    auto Filtred3 = IPAddress::filter(NotFiltredVector, "46");
     ASSERT_TRUE(Filtred1[0] == "1.0.0.46");
     ASSERT_TRUE(Filtred1[1] == "1.0.1.0");
     ASSERT_TRUE(Filtred1[2] == "1.70.46.1");

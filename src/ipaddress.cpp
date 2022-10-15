@@ -19,7 +19,7 @@ IPAddress::TVectorOfString IPAddress::SplitString(const std::string& StringToSpl
         CurrentPosition = StringToSplit.find(CharDelimiter, LastPosition);
     }
     ReturnIPVector.push_back(StringToSplit.substr(LastPosition));
-    return std::move(ReturnIPVector);
+    return ReturnIPVector;
 }
 /**
  * Split string InputIPString with IP address and other symbols by char CharDelimiter
@@ -29,17 +29,17 @@ IPAddress::TVectorOfString IPAddress::SplitString(const std::string& StringToSpl
  * @param IpPositionInLine - position IP in splitted string
  * @return IpToReturn
  */
-IPAddress IPAddress::SplitIP(const std::string& InputIPString, const char& CharDelimiter, const int& IpPositionInLine)
+IPAddress IPAddress::SplitIP(const std::string& InputIPString, const char& CharDelimiter, const uint& IpPositionInLine)
 {
     TVectorOfString VectorOfIPStrings = SplitString(InputIPString, CharDelimiter);
     IPAddress IpToReturn;
     if (IpPositionInLine <= VectorOfIPStrings.size())
-        for(int i = 0; i < VectorOfIPStrings.size(); i++)
+        for(uint i = 0; i < VectorOfIPStrings.size(); i++)
         {
             if(i == IpPositionInLine)
                 IpToReturn = IPAddress(VectorOfIPStrings[i]);
         }
-    return std::move(IpToReturn);
+    return IpToReturn;
 }
 /**
  * Filter vector of IPAddress elements by Filter "46.70.*.*" * - any number
@@ -47,21 +47,21 @@ IPAddress IPAddress::SplitIP(const std::string& InputIPString, const char& CharD
  * @param Filter "46.70.*.*" where * is any number 46 and 70 are numbers to compare with ip
  * @return s output vector returned by std::move
  */
-std::vector<IPAddress> IPAddress::filter(const std::vector<IPAddress>& VectorOfIP, const std::string& Filter) {
+IPAddress::TVectorOfIPAddress IPAddress::filter(const std::vector<IPAddress>& VectorOfIP, const std::string& Filter) {
     std::vector<IPAddress> FilteredIP;
     std::copy_if(VectorOfIP.begin(), VectorOfIP.end(),\
                  std::back_inserter(FilteredIP),\
                  [&Filter](const IPAddress &ip) {\
                      return ip == Filter;\
                  });
-    return std::move(FilteredIP);
+    return FilteredIP;
 }
 /**
  * Reverse sort method in vector of IPAddress
  * @param VectorToSort - input vector
  * @return SortedIPVector - output vector, returned by move semantic method std::move
  */
-std::vector<IPAddress> IPAddress::sort(const std::vector<IPAddress>& VectorToSort) {
+IPAddress::TVectorOfIPAddress IPAddress::sort(const std::vector<IPAddress>& VectorToSort) {
     std::vector<IPAddress> SortedIPVector;
     std::copy(VectorToSort.begin(), VectorToSort.end(), std::back_inserter(SortedIPVector));
 
@@ -71,7 +71,5 @@ std::vector<IPAddress> IPAddress::sort(const std::vector<IPAddress>& VectorToSor
                   return ip1 > ip2;
               }
     );
-    return std::move(SortedIPVector);
+    return SortedIPVector;
 }
-/**
- */

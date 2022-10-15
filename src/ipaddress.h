@@ -120,7 +120,7 @@ public:
      * Get StringIP
      * @return
      */
-    std::string GetStringIP() const {
+    auto GetStringIP() const {
         return StringIP;
     }
     /**
@@ -129,7 +129,7 @@ public:
      * @return
      */
 
-    TOctet GetIntIp(const int& i) const {
+    uint32_t GetIntIp(const int& i) const {
         switch (i)
         {
             case 0: return IPUnion.ABCD.a; break;
@@ -147,7 +147,7 @@ public:
      * @param IpPositionInLine - start with 0 position IP address in InputIPString
      * @return IpToReturn - returned IP by std::move
      */
-    static IPAddress SplitIP(const std::string& InputIPString, const char& CharDelimiter, const int& IpPositionInLine);
+    static IPAddress SplitIP(const std::string& InputIPString, const char& CharDelimiter, const uint& IpPositionInLine);
     /**
      * operator <
      * @param first
@@ -274,7 +274,7 @@ public:
         return OutStream;
     }
     /**
-     * operator= set IP from input const string
+     * operator= set IPAddress from const string
      * @param InputStringIP
      * @return
      */
@@ -284,10 +284,10 @@ public:
         return *this;
     }
     /**
-     * operator[] return octer at position i, where "1.2.3.4" i = 0 -> 1 and i = 3 -> 4
-     * @param i
+     * operator[] return octet at position i, where "1.2.3.4" i = 0 -> 1 and i = 3 -> 4
+     * @param i - index
      * @return TOctet
-     *
+     */
     TOctet operator[] (int i)
     {
         return this->GetIntIp(i);
@@ -297,7 +297,7 @@ public:
      * @param VectorToSort
      * @return
      */
-    static std::vector<IPAddress> sort(const std::vector<IPAddress>& VectorToSort);
+    static TVectorOfIPAddress sort(const std::vector<IPAddress>& VectorToSort);
     /**
      * Filter vector of IPAddress elements by Filter "46.70.*.*" where * is any number
      * 46 and 70 are numbers to compare with ip
@@ -307,5 +307,5 @@ public:
      * @param Filter
      * @return
      */
-    static std::vector<IPAddress> filter(const TVectorOfIPAddress& VectorOfIP, const std::string& Filter);
+    static TVectorOfIPAddress filter(const TVectorOfIPAddress& VectorOfIP, const std::string& Filter);
 };

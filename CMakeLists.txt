@@ -72,13 +72,13 @@ if (MSVC)
 
 else()
     target_compile_options(${PRJ_NAME} PRIVATE
-            -Wall -Wextra -pedantic -Wcomment)
+            -Wall -Wextra -pedantic -Werror)
     target_compile_options(ipaddress PRIVATE
-            -Wall -Wextra -pedantic -Wcomment)
+            -Wall -Wextra -pedantic -Werror)
     target_compile_options(version PRIVATE
-            -Wall -Wextra -pedantic -Wcomment)
+            -Wall -Wextra -pedantic -Werror)
     target_compile_options(test_all PRIVATE
-            -Wall -Wextra -pedantic -Wcomment)
+            -Wall -Wextra -pedantic -Werror)
 
 endif(MSVC)
 
